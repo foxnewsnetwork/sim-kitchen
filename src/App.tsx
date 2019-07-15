@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import SimKitchen from './components/sim-kitchen'
 import './App.css';
 
 const App: React.FC = () => {
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           Learn React
         </a>
       </header>
+      <SimKitchen />
     </div>
   );
 }

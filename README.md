@@ -79,7 +79,7 @@ Now that we have the "cross-functional" world of the business model down, we can
 The tools and frameworks we will use are as follows:
 
 - react (via create-react-app)
-  - ease of setup
+  - industry standard
   - engineering familiarity
 - graphql (via apollo-link)
   - community best practice for server-side communication
