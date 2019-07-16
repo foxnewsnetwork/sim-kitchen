@@ -1,4 +1,3 @@
-import ApolloClient from 'apollo-boost';
 import { ShelfName, Shelf } from './shelf'
 import { Table, create } from '../utils/table'
 import { OrderItem } from './order-item'
@@ -40,14 +39,3 @@ const DEFAULT_STATE: State = {
   deliverablePlates: create(),
   deliveries: create()
 }
-
-export default new ApolloClient({
-  clientState: {
-    defaults: DEFAULT_STATE
-  },
-  resolvers: {
-    Subscription: {
-
-    }
-  }
-})
