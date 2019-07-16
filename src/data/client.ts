@@ -1,43 +1,14 @@
 import ApolloClient from 'apollo-boost';
-
-const enum ShelfName {
-  HOT,
-  COLD,
-  FROZEN,
-  OVERFLOW
-}
-
-const enum Temperature {
-  HOT,
-  COLD,
-  FROZEN
-}
-
-type OrderItem = {
-  id: string,
-  name: string,
-  temp: Temperature,
-  shelfLife: number,
-  decayRate: number
-}
-type FoodPlate = {
-  id: string,
-  orderId: OrderItem["id"]
-}
-type DeliverablePlate = {
-  id: string,
-  foodPlateId: FoodPlate["id"],
-  deliverId: Delivery["id"]
-}
-type Delivery = {
-  id: string,
-  timeToArrival: number
-}
-type Table<T extends { id: string }> = Map<T["id"], T>
+import { ShelfName, Shelf } from './shelf'
+import { Table, create } from '../utils/table'
+import { OrderItem } from './order-item'
+import { FoodPlate } from './food-plate'
+import { DeliverablePlate } from './deliverable-plate'
+import { Delivery } from './delivery'
 
 type State = {
   shelves: {
-    [key in ShelfName]: Array<DeliverablePlate>
+    [key in ShelfName]: Shelf
   },
   orderItems: Table<OrderItem>,
   foodPlates: Table<FoodPlate>,
@@ -47,15 +18,27 @@ type State = {
 
 const DEFAULT_STATE: State = {
   shelves: {
-    [ShelfName.HOT]: [],
-    [ShelfName.COLD]: [],
-    [ShelfName.FROZEN]: [],
-    [ShelfName.OVERFLOW]: []
+    [ShelfName.HOT]: {
+      name: ShelfName.HOT,
+      items: []
+    },
+    [ShelfName.COLD]: {
+      name: ShelfName.COLD,
+      items: []
+    },
+    [ShelfName.FROZEN]: {
+      name: ShelfName.FROZEN,
+      items: []
+    },
+    [ShelfName.OVERFLOW]: {
+      name: ShelfName.OVERFLOW,
+      items: []
+    }
   },
-  orderItems: new Map(),
-  foodPlates: new Map(),
-  deliverablePlates: new Map(),
-  deliveries: new Map()
+  orderItems: create(),
+  foodPlates: create(),
+  deliverablePlates: create(),
+  deliveries: create()
 }
 
 export default new ApolloClient({
