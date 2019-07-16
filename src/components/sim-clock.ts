@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 /**
  * The clock ticks in milliseconds
  */
-export function SimClock(msPerTick: number = 100): number {
+export function useSimClock(msPerTick: number = 100): number {
   const [time, setTime] = useState(0)
 
   useEffect(() => {
