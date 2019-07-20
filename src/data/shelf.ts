@@ -1,4 +1,4 @@
-import { DeliverablePlate } from './deliverable-plate'
+import { DeliverableDish } from './deliverable-dish'
 
 export const enum ShelfName {
   HOT,
@@ -9,5 +9,5 @@ export const enum ShelfName {
 
 export type Shelf = {
   name: ShelfName,
-  items: Array<DeliverablePlate>
+  items: Array<DeliverableDish>
 }

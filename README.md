@@ -35,19 +35,19 @@ The business model should closely mirror the real world, this means:
 
 ```typescript
 interface Kitchen {
-  placeOrder(order: OrderItem): Promise<FoodPlate>
+  cookFoodFromOrder(order: OrderItem): Promise<FoodPlate>
 }
 
-interface DeliveryCounter {
-  storePlate(plate: FoodPlate): DeliverablePlate
+interface ServiceCounter {
+  assembleDishFromFood(plate: FoodPlate): DeliverableDish
 }
 
-interface DeliverablePlate {
+interface DeliverableDish {
   quality(time: Time): number
 }
 
 interface Delivery {
-  scheduleDelivery(plate: DeliverablePlate, deliveryBoy: Summonable): Promise<DeliveryReceipt>
+  scheduleDelivery(dish: DeliverableDish, deliveryBoy: Summonable): Delivery
 }
 
 interface Summonable {

@@ -3,8 +3,9 @@ import { ShelfName, Shelf } from './shelf'
 import { Table, create } from '../utils/table'
 import { OrderItem } from './order-item'
 import { FoodPlate } from './food-plate'
-import { DeliverablePlate } from './deliverable-plate'
+import { DeliverableDish } from './deliverable-dish'
 import { Delivery } from './delivery'
+import { ActionName, Action } from './action';
 
 type State = {
   shelves: {
@@ -12,7 +13,7 @@ type State = {
   },
   orderItems: Table<OrderItem>,
   foodPlates: Table<FoodPlate>,
-  deliverablePlates: Table<DeliverablePlate>,
+  deliverableDishes: Table<DeliverableDish>,
   deliveries: Table<Delivery>
 }
 
@@ -37,10 +38,12 @@ const DEFAULT_STATE: State = {
   },
   orderItems: create(),
   foodPlates: create(),
-  deliverablePlates: create(),
+  deliverableDishes: create(),
   deliveries: create()
 }
 
-export const reducer = combineReducers({
-  
-})
+const handlers = {
+  [ActionName.TAKE_DOWN_ORDER](state: State, action: Action<ActionName.TAKE_DOWN_ORDER>): State {
+    
+  }
+}

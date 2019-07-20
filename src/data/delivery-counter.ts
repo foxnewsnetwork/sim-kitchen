@@ -1,6 +1,6 @@
 import { FoodPlate } from "./food-plate";
-import { DeliverablePlate, create } from "./deliverable-plate";
+import { DeliverableDish, create } from "./deliverable-dish";
 
-export function storePlate(plate: FoodPlate): DeliverablePlate {
+export function storePlate(plate: FoodPlate): DeliverableDish {
   
 }
