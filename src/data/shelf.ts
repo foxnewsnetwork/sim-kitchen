@@ -8,6 +8,7 @@ export const enum ShelfName {
 }
 
 export type Shelf = {
+  id: string,
   name: ShelfName,
-  items: Array<DeliverableDish>
+  dishIds: Array<DeliverableDish["id"]>
 }
