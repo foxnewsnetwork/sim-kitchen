@@ -1,63 +1,61 @@
-import { Shelf } from './shelf'
-import { Table, create, TableElementType, ensureMembership, ensureExclusion } from '../utils/table'
-import { OrderItem } from './order-item'
-import { FoodPlate } from './food-plate'
-import { DeliverableDish } from './deliverable-dish'
-import { Delivery } from './delivery'
 import over from 'ramda/es/over';
 import lensPath from 'ramda/es/lensPath';
+import defaultTo from 'ramda/es/defaultTo';
+import { ActionName, ActionHash, CreateMetaAction, DestroyMetaAction } from './action';
+import { Reducer, Action } from 'redux';
+import { State, DEFAULT_STATE, TableName } from './state';
+import { ensureMembership, ensureExclusion } from '../utils/table'
 
-type State = {
-  shelves: Table<Shelf>,
-  orderItems: Table<OrderItem>,
-  foodPlates: Table<FoodPlate>,
-  deliverableDishes: Table<DeliverableDish>,
-  deliveries: Table<Delivery>
+type ReducerHash = {
+  [ActionName.CREATE_SHELF]: Reducer<State, ActionHash[ActionName.CREATE_SHELF]>,
+  [ActionName.CREATE_ORDER_ITEM]: Reducer<State, ActionHash[ActionName.CREATE_ORDER_ITEM]>,
+  [ActionName.CREATE_FOOD_PLATE]: Reducer<State, ActionHash[ActionName.CREATE_FOOD_PLATE]>,
+  [ActionName.CREATE_DELIVERABLE_DISH]: Reducer<State, ActionHash[ActionName.CREATE_DELIVERABLE_DISH]>,
+  [ActionName.CREATE_DELIVERY_REQUEST]: Reducer<State, ActionHash[ActionName.CREATE_DELIVERY_REQUEST]>,
+  [ActionName.CREATE_DELIVERY_RECEIPT]: Reducer<State, ActionHash[ActionName.CREATE_DELIVERY_RECEIPT]>,
+  [ActionName.CREATE_EXPIRE_TAG]: Reducer<State, ActionHash[ActionName.CREATE_EXPIRE_TAG]>,
+  [ActionName.DESTROY_SHELF]: Reducer<State, ActionHash[ActionName.DESTROY_SHELF]>,
+  [ActionName.DESTROY_ORDER_ITEM]: Reducer<State, ActionHash[ActionName.DESTROY_ORDER_ITEM]>,
+  [ActionName.DESTROY_FOOD_PLATE]: Reducer<State, ActionHash[ActionName.DESTROY_FOOD_PLATE]>,
+  [ActionName.DESTROY_DELIVERABLE_DISH]: Reducer<State, ActionHash[ActionName.DESTROY_DELIVERABLE_DISH]>,
+  [ActionName.DESTROY_DELIVERY_REQUEST]: Reducer<State, ActionHash[ActionName.DESTROY_DELIVERY_REQUEST]>,
+  [ActionName.DESTROY_DELIVERY_RECEIPT]: Reducer<State, ActionHash[ActionName.DESTROY_DELIVERY_RECEIPT]>,
+  [ActionName.DESTROY_EXPIRE_TAG]: Reducer<State, ActionHash[ActionName.DESTROY_EXPIRE_TAG]>,
 }
 
-type StateField = keyof State
-
-const DEFAULT_STATE: State = {
-  shelves: create(),
-  orderItems: create(),
-  foodPlates: create(),
-  deliverableDishes: create(),
-  deliveries: create()
+const ensureExistMetaReducer = (tableName: TableName) => (state = DEFAULT_STATE, action: CreateMetaAction<TableName>) => {
+  const tableLens = lensPath([tableName])
+  return over(tableLens, ensureMembership(action.payload), state)
 }
 
-const enum ActionName {
-  ENSURE_EXISTENCE,
-  DENY_EXISTENCE
+const denyExistMetaReducer = (tableName: TableName) => (state = DEFAULT_STATE, action: DestroyMetaAction<TableName>) => {
+  const tableLens = lensPath([tableName])
+  return over(tableLens, ensureExclusion(action.id), state)
 }
 
-type EnsureExistenceAction<F extends StateField> = {
-  readonly type: ActionName.ENSURE_EXISTENCE,
-  readonly tableName: F,
-  readonly payload: TableElementType<State[F]>
+const reducerHash: ReducerHash = {
+  [ActionName.CREATE_SHELF]: ensureExistMetaReducer(TableName.shelves),
+  [ActionName.CREATE_ORDER_ITEM]: ensureExistMetaReducer(TableName.orderItems),
+  [ActionName.CREATE_FOOD_PLATE]: ensureExistMetaReducer(TableName.foodPlates),
+  [ActionName.CREATE_DELIVERABLE_DISH]: ensureExistMetaReducer(TableName.deliverableDishes),
+  [ActionName.CREATE_DELIVERY_REQUEST]: ensureExistMetaReducer(TableName.deliveryRequests),
+  [ActionName.CREATE_DELIVERY_RECEIPT]: ensureExistMetaReducer(TableName.deliveryReceipts),
+  [ActionName.CREATE_EXPIRE_TAG]: ensureExistMetaReducer(TableName.expireTags),
+  [ActionName.DESTROY_SHELF]: denyExistMetaReducer(TableName.shelves),
+  [ActionName.DESTROY_ORDER_ITEM]: denyExistMetaReducer(TableName.orderItems),
+  [ActionName.DESTROY_FOOD_PLATE]: denyExistMetaReducer(TableName.foodPlates),
+  [ActionName.DESTROY_DELIVERABLE_DISH]: denyExistMetaReducer(TableName.deliverableDishes),
+  [ActionName.DESTROY_DELIVERY_REQUEST]: denyExistMetaReducer(TableName.deliveryRequests),
+  [ActionName.DESTROY_DELIVERY_RECEIPT]: denyExistMetaReducer(TableName.deliveryReceipts),
+  [ActionName.DESTROY_EXPIRE_TAG]: denyExistMetaReducer(TableName.expireTags),
 }
 
-type DenyExistenceAction<F extends StateField> = {
-  readonly type: ActionName.DENY_EXISTENCE,
-  readonly tableName: F,
-  readonly id: TableElementType<State[F]>["id"]
+const missingHandler = (state: any, action: { type: any }) => {
+  console.warn('missing handler for event of type', action.type)
+  return state;
 }
 
-const handlers = {
-  [ActionName.ENSURE_EXISTENCE]<F extends StateField>(state: State, action: EnsureExistenceAction<F>): State {
-    const tableLens = lensPath([action.tableName])
-    return over(tableLens, ensureMembership(action.payload), state)
-  },
-  [ActionName.DENY_EXISTENCE]<F extends StateField>(state: State, action: DenyExistenceAction<F>): State {
-    const tableLens = lensPath([action.tableName])
-    return over(tableLens, ensureExclusion(action.id), state)
-  }
-}
-
-export function reducer(state: State, action: { type: ActionName }): State {
-  const handler = handlers[action.type]
-  if (typeof handler === 'function') {
-    return handler(state, action)
-  } else {
-    return state
-  }
+export function reducer(state: State = DEFAULT_STATE, action: Action<ActionName>): State {
+  const handler = defaultTo(missingHandler, reducerHash[action.type])
+  return handler(state, action)
 }
