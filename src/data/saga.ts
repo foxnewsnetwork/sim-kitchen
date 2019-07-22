@@ -23,3 +23,7 @@ function* cookPlateFromOrder(action: CreateOrderItemAction) {
   const plateAction = createFoodPlateAction(foodPlate)
   yield put(plateAction)
 }
+
+function* prepareFoodForDelivery(action: CreateFoodPlateAction) {
+  const plate = action.payload
+}

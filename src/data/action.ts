@@ -68,7 +68,26 @@ const TableHash = {
 
 export type CreateMetaAction<T extends TableName> = {
   readonly type: ActionName,
-  readonly payload: TableElementType<State[TableName]>
+  readonly payload: TableElementType<State[T]>
+}
+
+function createMetaAction<T extends TableName>(tableName: T) {
+  return (payload: TableElementType<State[T]>) => ({
+    type: TableHash[tableName].create,
+    payload
+  })
+}
+
+export type DestroyMetaAction<T extends TableName> = {
+  readonly type: ActionName,
+  readonly id: TableElementType<State[T]>["id"]
+}
+
+function destroyMetaAction<T extends TableName>(tableName: T) {
+  return (id: TableElementType<State[T]>["id"]) => ({
+    type: TableHash[tableName].destroy,
+    id
+  })
 }
 
 export type CreateShelfAction = CreateMetaAction<TableName.shelves>
@@ -99,22 +118,3 @@ export type DestroyDeliveryReceiptAction = DestroyMetaAction<TableName.deliveryR
 export const destroyDeliveryReceiptAction = destroyMetaAction(TableName.deliveryReceipts)
 export type DestroyExpireTagAction = DestroyMetaAction<TableName.expireTags>
 export const destroyExpireTagAction = destroyMetaAction(TableName.expireTags)
-
-function createMetaAction<T extends TableName>(tableName: T) {
-  return (payload: TableElementType<State[T]>) => ({
-    type: TableHash[tableName].create,
-    payload
-  })
-}
-
-export type DestroyMetaAction<T extends TableName> = {
-  readonly type: ActionName,
-  readonly id: TableElementType<State[TableName]>["id"]
-}
-
-function destroyMetaAction<T extends TableName>(tableName: T) {
-  return (id: TableElementType<State[T]>["id"]) => ({
-    type: TableHash[tableName].destroy,
-    id
-  })
-}
