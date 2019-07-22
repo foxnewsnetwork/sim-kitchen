@@ -2,14 +2,14 @@ import { State, TableName } from './state';
 import { TableElementType } from '../utils/table'
 
 export const enum ActionName {
-  CREATE_SHELF = 'CREATE_SHELF',
+  CREATE_SHELF_LABEL = 'CREATE_SHELF_LABEL',
   CREATE_ORDER_ITEM = 'CREATE_ORDER_ITEM',
   CREATE_FOOD_PLATE = 'CREATE_FOOD_PLATE',
   CREATE_DELIVERABLE_DISH = 'CREATE_DELIVERABLE_DISH',
   CREATE_DELIVERY_REQUEST = 'CREATE_DELIVERY_REQUEST',
   CREATE_DELIVERY_RECEIPT = 'CREATE_DELIVERY_RECEIPT',
   CREATE_EXPIRE_TAG = 'CREATE_EXPIRE_TAG',
-  DESTROY_SHELF = 'DESTROY_SHELF',
+  DESTROY_SHELF_LABEL = 'DESTROY_SHELF_LABEL',
   DESTROY_ORDER_ITEM = 'DESTROY_ORDER_ITEM',
   DESTROY_FOOD_PLATE = 'DESTROY_FOOD_PLATE',
   DESTROY_DELIVERABLE_DISH = 'DESTROY_DELIVERABLE_DISH',
@@ -19,14 +19,14 @@ export const enum ActionName {
 }
 
 export type ActionHash = {
-  [ActionName.CREATE_SHELF]: CreateMetaAction<TableName.shelves>,
+  [ActionName.CREATE_SHELF_LABEL]: CreateMetaAction<TableName.shelfLabels>,
   [ActionName.CREATE_ORDER_ITEM]: CreateMetaAction<TableName.orderItems>,
   [ActionName.CREATE_FOOD_PLATE]: CreateMetaAction<TableName.foodPlates>,
   [ActionName.CREATE_DELIVERABLE_DISH]: CreateMetaAction<TableName.deliverableDishes>,
   [ActionName.CREATE_DELIVERY_REQUEST]: CreateMetaAction<TableName.deliveryRequests>,
   [ActionName.CREATE_DELIVERY_RECEIPT]: CreateMetaAction<TableName.deliveryReceipts>,
   [ActionName.CREATE_EXPIRE_TAG]: CreateMetaAction<TableName.expireTags>,
-  [ActionName.DESTROY_SHELF]: DestroyMetaAction<TableName.shelves>,
+  [ActionName.DESTROY_SHELF_LABEL]: DestroyMetaAction<TableName.shelfLabels>,
   [ActionName.DESTROY_ORDER_ITEM]: DestroyMetaAction<TableName.orderItems>,
   [ActionName.DESTROY_FOOD_PLATE]: DestroyMetaAction<TableName.foodPlates>,
   [ActionName.DESTROY_DELIVERABLE_DISH]: DestroyMetaAction<TableName.deliverableDishes>,
@@ -36,9 +36,9 @@ export type ActionHash = {
 }
 
 const TableHash = {
-  [TableName.shelves]: {
-    create: ActionName.CREATE_SHELF,
-    destroy: ActionName.CREATE_SHELF
+  [TableName.shelfLabels]: {
+    create: ActionName.CREATE_SHELF_LABEL,
+    destroy: ActionName.CREATE_SHELF_LABEL
   },
   [TableName.orderItems]: {
     create: ActionName.CREATE_ORDER_ITEM,
@@ -90,8 +90,8 @@ function destroyMetaAction<T extends TableName>(tableName: T) {
   })
 }
 
-export type CreateShelfAction = CreateMetaAction<TableName.shelves>
-export const createShelfAction = createMetaAction(TableName.shelves)
+export type CreateShelfLabelAction = CreateMetaAction<TableName.shelfLabels>
+export const createShelfLabelAction = createMetaAction(TableName.shelfLabels)
 export type CreateOrderItemAction = CreateMetaAction<TableName.orderItems>
 export const createOrderItemAction = createMetaAction(TableName.orderItems)
 export type CreateFoodPlateAction = CreateMetaAction<TableName.foodPlates>
@@ -104,8 +104,8 @@ export type CreateDeliveryReceiptAction = CreateMetaAction<TableName.deliveryRec
 export const createDeliveryReceiptAction = createMetaAction(TableName.deliveryReceipts)
 export type CreateExpireTagAction = CreateMetaAction<TableName.expireTags>
 export const createExpireTagAction = createMetaAction(TableName.expireTags)
-export type DestroyShelfAction = DestroyMetaAction<TableName.shelves>
-export const destroyShelfAction = destroyMetaAction(TableName.shelves)
+export type DestroyShelfLabelAction = DestroyMetaAction<TableName.shelfLabels>
+export const destroyShelfLabelAction = destroyMetaAction(TableName.shelfLabels)
 export type DestroyOrderItemAction = DestroyMetaAction<TableName.orderItems>
 export const destroyOrderItemAction = destroyMetaAction(TableName.orderItems)
 export type DestroyFoodPlateAction = DestroyMetaAction<TableName.foodPlates>

@@ -16,10 +16,10 @@ export const enum ShelfName {
   OVERFLOW
 }
 
-export type Shelf = {
+export type ShelfLabel = {
   id: string,
-  name: ShelfName,
-  dishes: HasMany<DeliverableDish>
+  shelf: ShelfName,
+  deliverableDish: BelongsTo<DeliverableDish>
 }
 export type DeliveryRequest = {
   id: string,
@@ -54,7 +54,7 @@ export type DeliverableDish = {
 }
 
 export const enum TableName {
-  shelves = 'shelves',
+  shelfLabels = 'shelfLabels',
   orderItems = 'orderItems',
   foodPlates = 'foodPlates',
   deliverableDishes = 'deliverableDishes',
@@ -64,7 +64,7 @@ export const enum TableName {
 }
 
 export type State = {
-  [TableName.shelves]: Table<Shelf>,
+  [TableName.shelfLabels]: Table<ShelfLabel>,
   [TableName.orderItems]: Table<OrderItem>,
   [TableName.foodPlates]: Table<FoodPlate>,
   [TableName.deliverableDishes]: Table<DeliverableDish>,
@@ -74,7 +74,10 @@ export type State = {
 }
 
 type CreateArgs = {
-  [TableName.shelves]: Pick<Shelf, "name">,
+  [TableName.shelfLabels]: {
+    shelfLabel: Pick<ShelfLabel, "shelf">,
+    deliverableDish: Pick<DeliverableDish, "id">
+  },
   [TableName.orderItems]: Exclude<OrderItem, "id">,
   [TableName.foodPlates]: Pick<OrderItem, "id">,
   [TableName.deliverableDishes]: Pick<FoodPlate, "id">,
@@ -88,11 +91,11 @@ type CreateHash = {
 }
 
 export const EntryCreator: CreateHash = {
-  [TableName.shelves]({ name }) {
+  [TableName.shelfLabels]({ shelfLabel, deliverableDish }) {
     return {
+      ...shelfLabel,
+      deliverableDish,
       id: uuid(),
-      name,
-      dishes: hasMany()
     }
   },
   [TableName.orderItems](order) {
@@ -135,7 +138,7 @@ export const EntryCreator: CreateHash = {
 }
 
 export const DEFAULT_STATE: State = {
-  shelves: create(),
+  shelfLabels: create(),
   orderItems: create(),
   foodPlates: create(),
   deliverableDishes: create(),

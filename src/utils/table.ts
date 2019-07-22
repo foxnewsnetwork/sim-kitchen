@@ -2,6 +2,7 @@ import findIndex from "ramda/es/findIndex";
 import append from "ramda/es/append";
 import reject from "ramda/es/reject";
 import eqProps from "ramda/es/eqProps";
+import find from "ramda/es/find";
 
 export type Entry = { id: string }
 
@@ -29,7 +30,7 @@ export function create<T extends Entry>(): Table<T> {
   return []
 }
 
-export const ensureMembership = <T extends Entry>(member: T) => (list: T[]) => {
+export const ensureMembership = <T extends Entry>(member: T) => (list: Table<T>) => {
   if (findIndex(eqProps("id", member), list) < 0) {
     return append(member, list)
   } else {
@@ -37,6 +38,8 @@ export const ensureMembership = <T extends Entry>(member: T) => (list: T[]) => {
   }
 }
 
-export const ensureExclusion = <T extends Entry>(memberId: string) => (list: T[]) => {
+export const ensureExclusion = <T extends Entry>(memberId: string) => (list: Table<T>) => {
   return reject(({ id }) => memberId === id, list)
 }
+
+export const findById = <T extends Entry>(id: T["id"]) => find<T>(entry => entry.id === id)
