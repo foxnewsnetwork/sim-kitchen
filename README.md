@@ -2,6 +2,10 @@
 
 Software engineer application interview problem from City Storage Systems.
 
+## IMPORTANT: Nonoperational WIP at the moment
+
+Due to time constraints, I've only managed to lay down the framework and direction for this project. TODOs are peppered around the code.
+
 ## Product Solution Design Overview
 
 The [product specs](./Software_Engineering_Challenge.pdf) demand a simulation software attempts to emulate the kitchen of a resturaunt that
@@ -32,33 +36,16 @@ The business model should closely mirror the real world, this means:
 - employs the [principle of least surprise](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) (that is, someone in the business should find this intuitive)
 - interfaces (aka classes for java people) [should be deep](https://web.stanford.edu/~ouster/cgi-bin/cs190-winter18/lecture.php?topic=modularDesign) (that is, few points of contact, but does a lot)
 - normalize for [data-oriented design](http://www.dataorienteddesign.com/dodbook/)
-
 ```typescript
-interface Kitchen {
-  cookFoodFromOrder(order: OrderItem): Promise<FoodPlate>
-}
-
-interface ServiceCounter {
-  assembleDishFromFood(plate: FoodPlate): DeliverableDish
-}
-
-interface DeliverableDish {
-  quality(time: Time): number
-}
-
-interface Delivery {
-  scheduleDelivery(dish: DeliverableDish, deliveryBoy: Summonable): Delivery
-}
-
-interface Summonable {
-  summon(worker: Employee): Promise<Summonable>
-}
-
-/**
- * types for Employee, DeliveryReceipt, OrderItem, FoodPlate, Time
- * are omitted here (we say "ryaku" at my current firm)
- */
+type ShelfLabel = { /* details */ }
+type DeliveryRequest = { /* details */ }
+type DeliveryReceipt = { /* details */ }
+type ExpireTag = { /* details */ }
+type OrderItem = { /* details */ }
+type FoodPlate = { /* details */ }
+type DeliverableDish = { /* details */ }
 ```
+- see the contents of `data/state` for details
 
 >Sidebar: What is the design process behind the above business models?
 
@@ -81,8 +68,8 @@ The tools and frameworks we will use are as follows:
 - react (via create-react-app)
   - industry standard
   - engineering familiarity
-- graphql (via apollo-link)
-  - community best practice for server-side communication
+- redux (via saga)
+  - community best practice for simulating async and streams
 
 
 # Appendix

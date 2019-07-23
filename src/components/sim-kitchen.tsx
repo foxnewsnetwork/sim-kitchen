@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useSimClock } from './sim-clock';
-// import client from '../data/client'
-// import { ApolloProvider } from 'react-apollo';
-
+import React from 'react';
+import { Provider } from 'react-redux'
+import { store } from '../data/store'
+import ShelfContainer from './shelf-collection-container';
 
 const SimKitchen: React.FC = () => {
-  const time = useSimClock()
-
   return (
-    <Subscription subscription={ORDER_SUBSCRIPTION}>
-      {
-        data => (orderToPlate(data.order))
-      }
-    </Subscription>
+    <Provider store={store}>
+      <ShelfContainer />
+    </Provider>
   )
 }
-  
+
 
 export default SimKitchen;
