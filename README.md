@@ -4,7 +4,7 @@ Software engineer application interview problem from City Storage Systems.
 
 ## IMPORTANT: Nonoperational WIP at the moment
 
-Due to time constraints, I've only managed to lay down the framework and direction for this project. TODOs are peppered around the code.
+Due to time constraints, I've only managed to lay down the framework and direction for this project. TODOs are peppered around the code. 
 
 ## Product Solution Design Overview
 
@@ -102,9 +102,14 @@ For the purposes of this assignment, we'll skip the additional steps of QA, prod
 - influencers help a lot
 - watch your costs (e.g. avoid fancy food vendor)
 
-## Q&A
+## Why are there no tests?!
 
-Here, I pose and answer 
+This dir contains no tests for the following reasons:
+
+- due to time constraints, the assignment is still in the design / architecture phase
+  - writing tests during design / architecture phase contributes negative value as the designs are still in flux
+
+Furthermore, although tests are missing, I have taken care to write "testable code"; this is done by adhering to industry standards and general best practices.
 
 ## References
 
